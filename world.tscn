@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://5825emu7axb7"]
+[gd_scene load_steps=2 format=3 uid="uid://5825emu7axb7"]
 
-[node name="World" type="Node2D"]
+[ext_resource type="PackedScene" uid="uid://jtyjx4lsfdgd" path="res://Snake/snake_head.tscn" id="1_xcxqd"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Snake Head" parent="." instance=ExtResource("1_xcxqd")]
+position = Vector2(32, 32)
