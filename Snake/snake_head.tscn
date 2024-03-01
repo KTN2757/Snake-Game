@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://jtyjx4lsfdgd"]
+
+[ext_resource type="Texture2D" uid="uid://cvhe0qwo5rwts" path="res://Assets/Snake-Head-Right.png" id="1_7hlte"]
+
+[node name="Snake Head" type="CharacterBody2D"]
+position = Vector2(8, 8)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_7hlte")
