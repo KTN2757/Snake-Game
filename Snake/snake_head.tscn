@@ -1,12 +1,153 @@
-[gd_scene load_steps=3 format=3 uid="uid://jtyjx4lsfdgd"]
+[gd_scene load_steps=17 format=3 uid="uid://jtyjx4lsfdgd"]
 
-[ext_resource type="Texture2D" uid="uid://cvhe0qwo5rwts" path="res://Assets/Snake-Head-Right.png" id="1_7hlte"]
 [ext_resource type="Script" path="res://Snake/snake_head.gd" id="1_d25pi"]
+[ext_resource type="Texture2D" uid="uid://0e0kw7mpk6yp" path="res://Assets/Snake-Sprite-Sheet.png" id="2_ldoai"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5xcjd"]
+size = Vector2(16, 16)
+
+[sub_resource type="Animation" id="Animation_2i2lb"]
+resource_name = "Right"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SnakeHeadSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_5pos4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SnakeHeadSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_j6ha3"]
+resource_name = "Left"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SnakeHeadSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_x17qu"]
+resource_name = "Up"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SnakeHeadSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_fkvfu"]
+resource_name = "Down"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SnakeHeadSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h3o16"]
+_data = {
+"Down": SubResource("Animation_fkvfu"),
+"Left": SubResource("Animation_j6ha3"),
+"RESET": SubResource("Animation_5pos4"),
+"Right": SubResource("Animation_2i2lb"),
+"Up": SubResource("Animation_x17qu")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xvh02"]
+animation = &"Left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5gft6"]
+animation = &"Down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_difm7"]
+animation = &"Up"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pvoqf"]
+animation = &"Right"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_yxioj"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_xvh02")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_5gft6")
+blend_point_1/pos = Vector2(0, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_difm7")
+blend_point_2/pos = Vector2(0, -1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_pvoqf")
+blend_point_3/pos = Vector2(1, 0)
+blend_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_git1d"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_g4sl8"]
+states/End/position = Vector2(900, 100.165)
+states/Run/node = SubResource("AnimationNodeBlendSpace2D_yxioj")
+states/Run/position = Vector2(518.667, 100.08)
+states/Start/position = Vector2(90.6667, 87.0252)
+transitions = ["Start", "Run", SubResource("AnimationNodeStateMachineTransition_git1d")]
 
 [node name="Snake Head" type="CharacterBody2D"]
-position = Vector2(8, 8)
 script = ExtResource("1_d25pi")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_7hlte")
+[node name="SnakeHeadSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_ldoai")
+hframes = 5
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5xcjd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h3o16")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h3o16")
+}
+tree_root = SubResource("AnimationNodeStateMachine_g4sl8")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Run/blend_position = Vector2(-0.0136646, -0.164103)
